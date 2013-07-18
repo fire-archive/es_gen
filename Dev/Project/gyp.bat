@@ -1,0 +1,1 @@
+../Tools/gyp/gyp --depth=.
