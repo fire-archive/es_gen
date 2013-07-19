@@ -10,7 +10,6 @@
         '<(es_core_dir)/game_main.cpp',
         '<(es_core_dir)/game_main.h',
         '<(es_core_dir)/main.cpp',
-        '<(es_core_dir)/main.h',
         '<(es_core_dir)/render_main.cpp',
         '<(es_core_dir)/render_main.h',
         '<(es_core_dir)/head_src/game.cpp',
@@ -69,7 +68,6 @@
         '<(es_core_dir)/game_main.cpp',
         '<(es_core_dir)/game_main.h',
         '<(es_core_dir)/main.cpp',
-        '<(es_core_dir)/main.h',
         '<(es_core_dir)/render_main.cpp',
         '<(es_core_dir)/render_main.h',
         '<(es_core_dir)/scene_load_src/game.cpp',
@@ -110,16 +108,6 @@
           '<(es_core_dir)/',
         ],
       },
-      'conditions': [
-        ['OS=="win"', {
-          'targets': [
-            {
-			  'defines': [
-			  ],
-            },
-          ],
-        }],
-      ],
     },
   ],
 }
