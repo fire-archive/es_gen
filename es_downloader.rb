@@ -27,6 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 require 'fileutils'
 require 'open-uri'
+require 'zlib'
 
 FileUtils.mkpath "Dev/Tools"
 Dir.chdir "Dev/Tools"
@@ -59,7 +60,10 @@ system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /pro
 Dir.chdir "../../ogre"
 FileUtils.mkpath "Build"
 Dir.chdir "Build"
-system "cmake -G \"Visual Studio 11\" -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=1 -DCMAKE_INSTALL_PREFIX=../../../../Run -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
+
+# TBB_HOME uses a hardcoded tbb Windows path.
+
+system "cmake -G \"Visual Studio 11\" -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=1 -DCMAKE_INSTALL_PREFIX=../../../../Run -DTBB_HOME=L:\Development\ES_Downloader\Dev\Tools\tbb -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
 system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=RelWithDebInfo ALL_BUILD.vcxproj]
 system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=RelWithDebInfo INSTALL.vcxproj]
 
