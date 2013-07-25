@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 =begin
 Copyright (c) 2013, K Ernest Lee
 All rights reserved.
@@ -27,7 +28,25 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 require 'fileutils'
 require 'open-uri'
-require 'zlib'
+require 'rbconfig'
+
+def os
+  @os ||= (
+    host_os = RbConfig::CONFIG['host_os']
+    case host_os
+    when /mswin|msys|mingw|cygwin|bccwin|wince|emc/
+      :windows
+    when /darwin|mac os/
+      :macosx
+    when /linux/
+      :linux
+    when /solaris|bsd/
+      :unix
+    else
+      raise Error::WebDriverError, "unknown os: #{host_os.inspect}"
+    end
+  )
+end
 
 FileUtils.mkpath "Dev/Tools"
 Dir.chdir "Dev/Tools"
@@ -40,9 +59,6 @@ system "hg clone https://bitbucket.org/cabalistic/ogredeps"
 
 Dir['./[^.]*'].select { |e| File.directory? e }.each do |e|
   Dir.chdir(e) { system "git pull" } if File.exist? File.join(e, '.git')
-end
-
-Dir['./[^.]*'].select { |e| File.directory? e }.each do |e|
   Dir.chdir(e) { system "hg pull -u" } if File.exist? File.join(e, '.hg')
 end
 
@@ -51,11 +67,20 @@ end
 Dir.chdir "ogredeps"
 FileUtils.mkpath "Build"
 Dir.chdir "Build"
-system "cmake -G \"Visual Studio 11\" .."
-system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Debug ALL_BUILD.vcxproj]
-system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Debug INSTALL.vcxproj]
-system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release ALL_BUILD.vcxproj]
-system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release INSTALL.vcxproj]
+
+if os == :windows
+  system "cmake -G \"Visual Studio 11\" .."
+  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Debug ALL_BUILD.vcxproj]
+  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Debug INSTALL.vcxproj]
+  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release ALL_BUILD.vcxproj]
+  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release INSTALL.vcxproj]
+end
+
+if os == :macosx
+  system "cmake -G Xcode .."
+  system "xcodebuild -configuration Release"
+  system "xcodebuild -scheme install"
+end
 
 Dir.chdir "../../ogre"
 FileUtils.mkpath "Build"
@@ -63,11 +88,26 @@ Dir.chdir "Build"
 
 # TBB_HOME uses a hardcoded tbb Windows path.
 
-system "cmake -G \"Visual Studio 11\" -DOGRE_BUILD_SAMPLES=0 -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=1 -DCMAKE_INSTALL_PREFIX=../../../../Run -DTBB_HOME=\"L:\Development\ES_Downloader\Dev\Tools\tbb" -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
-system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=RelWithDebInfo ALL_BUILD.vcxproj]
-system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=RelWithDebInfo INSTALL.vcxproj]
+# Assume that tbb is already installed
+
+if os == :windows
+  system "cmake -G \"Visual Studio 11\" -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=1 -DOGRE_BUILD_SAMPLES=0 -DCMAKE_INSTALL_PREFIX=../../../../Run -DTBB_HOME=\"C:/Program Files (x86)/tbb41_20130613oss\" -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
+  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=RelWithDebInfo ALL_BUILD.vcxproj]
+end
+
+if os == :macosx
+  system "cmake -G \"Xcode\" -DOGRE_BUILD_RENDERSYSTEM_-DOGRE_BUILD_SAMPLES=0 GL3PLUS=1 -DCMAKE_INSTALL_PREFIX=../../../../Run -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
+  system "xcodebuild -configuration Release"
+end
 
 # Build SDL
 # Build libzmq
 # Build czmq
 # Build es_core
+
+Dir.chdir "../../../Project/"
+system "gyp --depth=."
+
+if os == :macosx
+  system "xcodebuild"
+end
