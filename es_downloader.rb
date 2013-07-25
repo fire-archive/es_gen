@@ -88,6 +88,8 @@ Dir.chdir "Build"
 
 # TBB_HOME uses a hardcoded tbb Windows path.
 
+# Assume that tbb is already installed
+
 if os == :windows
   system "cmake -G \"Visual Studio 11\" -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=1 -DCMAKE_INSTALL_PREFIX=../../../../Run -DTBB_HOME=\"C:/Program Files (x86)/tbb41_20130613oss\" -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
   system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=RelWithDebInfo ALL_BUILD.vcxproj]
@@ -96,10 +98,16 @@ end
 if os == :macosx
   system "cmake -G \"Xcode\" -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=1 -DCMAKE_INSTALL_PREFIX=../../../../Run -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
   system "xcodebuild -configuration Release"
-  system "xcodebuild -scheme install"
 end
 
 # Build SDL
 # Build libzmq
 # Build czmq
 # Build es_core
+
+Dir.chdir "../../../Project/"
+system "gyp --depth=."
+
+if os == :macosx
+  system "xcodebuild"
+end
