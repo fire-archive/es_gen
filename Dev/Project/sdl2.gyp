@@ -188,6 +188,7 @@
                         "<(sdl_dir)/src/thread/windows/SDL_sysmutex.c",
                         "<(sdl_dir)/src/thread/windows/SDL_syssem.c",
                         "<(sdl_dir)/src/thread/windows/SDL_systhread.c",
+                        "<(sdl_dir)/src/thread/windows/SDL_systls.c",
                         "<(sdl_dir)/src/thread/generic/SDL_syscond.c",
                         "<(sdl_dir)/src/video/windows/SDL_windowsclipboard.c",
                         "<(sdl_dir)/src/video/windows/SDL_windowsevents.c",
@@ -208,7 +209,7 @@
                         "<(sdl_dir)/src/joystick/windows/SDL_dxjoystick.c",
                         "<(sdl_dir)/src/audio/directsound/SDL_directsound.c",
                         "<(sdl_dir)/src/audio/xaudio2/SDL_xaudio2.c",
-                        "<(sdl_dir)/src/render/direct3d/SDL_render_d3d.c"
+                        "<(sdl_dir)/src/render/direct3d/SDL_render_d3d.c"                  
                     ],
                     "direct_dependent_settings": {
                         "target_conditions": [
