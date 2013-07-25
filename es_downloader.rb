@@ -63,8 +63,6 @@ Dir['./[^.]*'].select { |e| File.directory? e }.each do |e|
   Dir.chdir(e) { system "hg pull -u" } if File.exist? File.join(e, '.hg')
 end
 
-# Download, unpack and build tbb
-
 Dir.chdir "ogredeps"
 FileUtils.mkpath "Build"
 Dir.chdir "Build"
@@ -102,9 +100,20 @@ end
 # Build czmq
 # Build es_core
 
-Dir.chdir "../../../Project/"
+
+
+Dir.chdir "../../.."
+Dir.pwd
+
+Dir.glob("Tools/ogre/Build/bin/relwithdebinfo/*.dll") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
+Dir.glob("Tools/ogre/Build/bin/relwithdebinfo/*.pdb") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
+Dir.glob("Tools/tbb/bin/intel64/vc11/*.dll") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
+
+Dir.chdir "Projects"
+
 system "gyp --depth=."
 
 if os == :macosx
-  system "xcodebuild"
+  system "xcodebuild -project es_core"
 end
+
