@@ -109,7 +109,7 @@ Dir.glob("Tools/ogre/Build/bin/relwithdebinfo/*.dll") {|f| FileUtils.cp File.exp
 Dir.glob("Tools/ogre/Build/bin/relwithdebinfo/*.pdb") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
 Dir.glob("Tools/tbb/bin/intel64/vc11/*.dll") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
 
-Dir.chdir "Projects"
+Dir.chdir "./Project"
 
 system "gyp --depth=."
 
