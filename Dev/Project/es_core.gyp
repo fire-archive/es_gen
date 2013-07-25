@@ -25,6 +25,7 @@
           '<(es_core_dir)/../ogre/Build/include',
           '<(es_core_dir)/../ogre/OgreMain/include',
           '<(es_core_dir)/../SDL/include',
+          '<(es_core_dir)/../tbb/include',
           '<(es_core_dir)/head_src/',
       ],
       'link_settings': {
@@ -83,6 +84,7 @@
           '<(es_core_dir)/../ogre/Build/include',
           '<(es_core_dir)/../ogre/OgreMain/include',
           '<(es_core_dir)/../SDL/include',
+          '<(es_core_dir)/../tbb/include',
           '<(es_core_dir)/head_src/',
       ],
       'link_settings': {
