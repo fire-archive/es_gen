@@ -56,6 +56,7 @@ system "git clone git://github.com/zeromq/libzmq.git"
 system "git clone git://github.com/zeromq/czmq.git"
 system "hg clone http://hg.libsdl.org/SDL"
 system "hg clone https://bitbucket.org/cabalistic/ogredeps"
+system "git clone git@github.com/fire/tbb41_20130613oss.git tbb"
 
 Dir['./[^.]*'].select { |e| File.directory? e }.each do |e|
   Dir.chdir(e) { system "git pull" } if File.exist? File.join(e, '.git')
@@ -87,8 +88,6 @@ FileUtils.mkpath "Build"
 Dir.chdir "Build"
 
 # TBB_HOME uses a hardcoded tbb Windows path.
-
-# Assume that tbb is already installed
 
 if os == :windows
   system "cmake -G \"Visual Studio 11\" -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=1 -DOGRE_BUILD_SAMPLES=0 -DCMAKE_INSTALL_PREFIX=../../../../Run -DTBB_HOME=\"C:/Program Files (x86)/tbb41_20130613oss\" -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
