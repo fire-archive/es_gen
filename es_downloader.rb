@@ -51,12 +51,13 @@ end
 FileUtils.mkpath "Dev/Tools"
 Dir.chdir "Dev/Tools"
 system "git clone git://github.com/TTimo/es_core.git"
-system "hg clone http://bitbucket.org/sinbad/ogre/"
-system "git clone git://github.com/zeromq/libzmq.git"
+system "hg clone https://bitbucket.org/sinbad/ogre/"
+system "git clone https://github.com/zeromq/zeromq3-x.git libzmq"
 system "git clone git://github.com/zeromq/czmq.git"
 system "hg clone http://hg.libsdl.org/SDL"
 system "hg clone https://bitbucket.org/cabalistic/ogredeps"
 system "git clone git://github.com/fire/tbb41_20130613oss tbb"
+system "git clone https://chromium.googlesource.com/external/gyp.git"
 
 Dir['./[^.]*'].select { |e| File.directory? e }.each do |e|
   Dir.chdir(e) { system "git pull" } if File.exist? File.join(e, '.git')
@@ -95,12 +96,10 @@ if os == :macosx
   system "xcodebuild -configuration Release"
 end
 
-# Build SDL
+
 # Build libzmq
 # Build czmq
 # Build es_core
-
-
 
 Dir.chdir "../../.."
 Dir.pwd
@@ -109,9 +108,16 @@ Dir.glob("Tools/ogre/Build/bin/relwithdebinfo/*.dll") {|f| FileUtils.cp File.exp
 Dir.glob("Tools/ogre/Build/bin/relwithdebinfo/*.pdb") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
 Dir.glob("Tools/tbb/bin/intel64/vc11/*.dll") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
 
+if os == :windows
+
+  system %q[%PROGRAMFILES(x86)%\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" builds\msvc\msvc10.sln /upgrade"]
+  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release  builds\msvc\msvc10.sln]
+  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release Tools\czmq\builds\msvc\czmq.vcxproj]
+end
+
 Dir.chdir "./Project"
 
-system "gyp --depth=."
+system "gyp --depth=." # Build es_core SDL
 
 if os == :macosx
   system "xcodebuild -project es_core"
