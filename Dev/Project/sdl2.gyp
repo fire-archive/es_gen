@@ -33,10 +33,10 @@
         ],
 
         "configurations": {
+            "Release": {
+            },
             "Debug": {
             },
-            "Release": {
-            }
         }
     },
 

@@ -6,6 +6,9 @@
     {
       'target_name': 'head',
       'type': 'executable',
+      'dependencies':[
+        'sdl2.gyp:SDL2',
+      ],      
       'sources': [
         '<(es_core_dir)/game_main.cpp',
         '<(es_core_dir)/game_main.h',
@@ -43,6 +46,7 @@
           '<(es_core_dir)/../czmq/builds/msvc/Release',
           '<(es_core_dir)/../ogre/Build/lib/RelWithDebInfo',
           '<(es_core_dir)/../SDL/VisualC/SDL/Win32/Release',
+          '<(es_core_dir)/../tbb/lib/intel64/vc11/',
         ],
       },
       },
@@ -102,6 +106,7 @@
           '<(es_core_dir)/../czmq/builds/msvc/Release',
           '<(es_core_dir)/../ogre/Build/lib/RelWithDebInfo',
           '<(es_core_dir)/../SDL/VisualC/SDL/Win32/Release',
+          '<(es_core_dir)/../tbb/lib/intel64/vc11/',
         ],
       },
       },

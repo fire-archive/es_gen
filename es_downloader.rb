@@ -106,12 +106,11 @@ Dir.pwd
 
 Dir.glob("Tools/ogre/Build/bin/relwithdebinfo/*.dll") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
 Dir.glob("Tools/ogre/Build/bin/relwithdebinfo/*.pdb") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
-Dir.glob("Tools/tbb/bin/intel64/vc11/*.dll") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
+Dir.glob("Tools/tbb/bin/ia32/vc11/*.dll") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
 
 if os == :windows
-
-  system %q[%PROGRAMFILES(x86)%\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" builds\msvc\msvc10.sln /upgrade"]
-  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release  builds\msvc\msvc10.sln]
+  system %q["%PROGRAMFILES(x86)%\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" Tools\libzmq\builds\msvc\msvc10.sln /upgrade]
+  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release  Tools\libzmq\builds\msvc\msvc10.sln]
   system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release Tools\czmq\builds\msvc\czmq.vcxproj]
 end
 
