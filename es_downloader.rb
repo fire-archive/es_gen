@@ -50,7 +50,7 @@ end
 
 FileUtils.mkpath "Dev/Tools"
 Dir.chdir "Dev/Tools"
-system "git clone git://github.com/TTimo/es_core.git"
+system "git clone https://github.com/fire/es_core.git -b develop"
 system "hg clone https://bitbucket.org/sinbad/ogre/"
 system "git clone https://github.com/zeromq/zeromq3-x.git libzmq"
 system "git clone git://github.com/zeromq/czmq.git"
@@ -96,7 +96,6 @@ if os == :macosx
   system "xcodebuild -configuration Release"
 end
 
-
 # Build libzmq
 # Build czmq
 # Build es_core
@@ -104,9 +103,15 @@ end
 Dir.chdir "../../.."
 Dir.pwd
 
+unless File.directory?("../Run/")
+  FileUtils.mkdir_p("../Run/")
+end
+
 Dir.glob("Tools/ogre/Build/bin/relwithdebinfo/*.dll") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
 Dir.glob("Tools/ogre/Build/bin/relwithdebinfo/*.pdb") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
 Dir.glob("Tools/tbb/bin/ia32/vc11/*.dll") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
+Dir.glob("Tools/libzmq/bin/Win32/libzmq*") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
+FileUtils.cp_r "Tools/es_core/binaries/media", "../Run/"
 
 if os == :windows
   system %q["%PROGRAMFILES(x86)%\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" Tools\libzmq\builds\msvc\msvc10.sln /upgrade]
@@ -122,3 +127,12 @@ if os == :macosx
   system "xcodebuild -project es_core"
 end
 
+if os == :windows
+  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo es_core.sln]
+end
+
+Dir.chdir ".."
+
+Dir.glob("Project/default/*.dll") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
+Dir.glob("Project/default/*.pdb") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
+Dir.glob("Project/default/*.exe") {|f| FileUtils.cp File.expand_path(f), "../Run/" }

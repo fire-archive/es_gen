@@ -31,13 +31,6 @@
                 "cflags": [ "-fPIC" ]
             }]
         ],
-
-        "configurations": {
-            "Release": {
-            },
-            "Debug": {
-            },
-        }
     },
 
     "targets": [
@@ -146,13 +139,7 @@
                         "<(sdl_dir)/src/joystick/linux/SDL_sysjoystick.c"
                     ],
                     "direct_dependent_settings": {
-                        "target_conditions": [
-                            ["_type == 'executable'", {
-                                "sources": [
-                                    "<(sdl_dir)/src/main/dummy/SDL_dummy_main.c"
-                                ]
-                            }]
-                        ]
+                       
                     }
                 }],
                 ["OS == 'win'", {
@@ -212,14 +199,6 @@
                         "<(sdl_dir)/src/render/direct3d/SDL_render_d3d.c"                  
                     ],
                     "direct_dependent_settings": {
-                        "target_conditions": [
-                            ["_type == 'executable'", {
-                                "sources": [
-                                    "<(sdl_dir)/src/main/windows/SDL_windows_main.c",
-                                    "<(sdl_dir)/src/main/windows/version.rc"
-                                ]
-                            }]
-                        ]
                     },
                     #if you see the error: Cannot open include file: 'dxsdkver.h', edit this :)
                     "include_dirs": [ "include", "C:/Program Files (x86)/Microsoft DirectX SDK (June 2010)/Include/" ],
@@ -260,13 +239,6 @@
                         "<(sdl_dir)/src/joystick/darwin/SDL_sysjoystick.c",
                     ],
                     "direct_dependent_settings": {
-                        "target_conditions": [
-                            ["_type == 'executable'", {
-                                "sources": [
-                                    "<(sdl_dir)/src/main/dummy/SDL_dummy_main.c"
-                                ]
-                            }]
-                        ]
                     }
                 }]
             ],
