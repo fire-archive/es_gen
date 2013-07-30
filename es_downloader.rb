@@ -51,7 +51,7 @@ end
 FileUtils.mkpath "Dev/Tools"
 Dir.chdir "Dev/Tools"
 system "git clone https://github.com/fire/es_core.git -b develop"
-system "hg clone https://bitbucket.org/sinbad/ogre/"
+system "hg clone https://bitbucket.org/sinbad/ogre/ -r v1-8"
 system "git clone https://github.com/zeromq/zeromq3-x.git libzmq"
 system "git clone git://github.com/zeromq/czmq.git"
 system "hg clone http://hg.libsdl.org/SDL"
@@ -127,7 +127,7 @@ end
 
 Dir.chdir "./Project"
 
-system "gyp --depth=." # Build es_core SDL
+system "../Tools/gyp/gyp --depth=." # Build es_core SDL
 
 if os == :macosx
   system "xcodebuild -project es_core"
