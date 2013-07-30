@@ -47,6 +47,7 @@
           '<(es_core_dir)/../ogre/Build/lib/RelWithDebInfo',
           '<(es_core_dir)/../SDL/VisualC/SDL/Win32/Release',
           '<(es_core_dir)/../tbb/lib/intel64/vc11/',
+          'default',
         ],
       },
       },
@@ -107,6 +108,7 @@
           '<(es_core_dir)/../ogre/Build/lib/RelWithDebInfo',
           '<(es_core_dir)/../SDL/VisualC/SDL/Win32/Release',
           '<(es_core_dir)/../tbb/lib/intel64/vc11/',
+          'default'
         ],
       },
       },
