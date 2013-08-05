@@ -50,7 +50,7 @@ end
 
 FileUtils.mkpath "Dev/Tools"
 Dir.chdir "Dev/Tools"
-system "git clone https://github.com/fire/es_core.git -b develop"
+system "git clone https://github.com/TTimo/es_core.git"
 system "hg clone https://bitbucket.org/sinbad/ogre/ -r v1-8"
 system "git clone https://github.com/zeromq/zeromq3-x.git libzmq"
 system "git clone git://github.com/zeromq/czmq.git"
@@ -69,7 +69,8 @@ FileUtils.mkpath "Build"
 Dir.chdir "Build"
 
 if os == :windows
-  system "cmake -G \"Visual Studio 11\" .."
+# $Env:Path = "$Env:Path;C:\Program Files (x86)\CMake 2.8\bin"
+  system %q[cmake -G "Visual Studio 11" ..]
   system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Debug ALL_BUILD.vcxproj]
   system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Debug INSTALL.vcxproj]
   system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release ALL_BUILD.vcxproj]
@@ -87,6 +88,9 @@ FileUtils.mkpath "Build"
 Dir.chdir "Build"
 
 if os == :windows
+# the path to ogredeps is wrong?
+# no, I think it's fine .. there's a problem with the ogredeps build though,
+# that folder doesn't get created
   system "cmake -G \"Visual Studio 11\" -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=1 -DOGRE_BUILD_SAMPLES=0 -DCMAKE_INSTALL_PREFIX=../../../../Run -DTBB_HOME=\"#{Dir.pwd + "/../../tbb/"}\" -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
   system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=RelWithDebInfo ALL_BUILD.vcxproj]
 end
