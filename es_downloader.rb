@@ -131,7 +131,7 @@ end
 
 Dir.chdir "./Project"
 
-system "../Tools/gyp/gyp --depth=." # Build es_core SDL
+system "gyp --depth=." # Build es_core SDL
 
 if os == :macosx
   system "xcodebuild -project es_core"
