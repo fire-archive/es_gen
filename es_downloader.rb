@@ -103,21 +103,13 @@ end
 Dir.chdir "../../.."
 Dir.pwd
 
-unless File.directory?("../Run/")
-  FileUtils.mkdir_p("../Run/")
-end
+FileUtils.mkpath "../Run/"
 
 Dir.glob("Tools/ogre/Build/bin/relwithdebinfo/*.dll") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
 Dir.glob("Tools/ogre/Build/bin/relwithdebinfo/*.pdb") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
 Dir.glob("Tools/tbb/bin/ia32/vc11/*.dll") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
 Dir.glob("Tools/libzmq/bin/Win32/libzmq*") {|f| FileUtils.cp File.expand_path(f), "../Run/" }
 FileUtils.cp_r "Tools/es_core/binaries/media", "../Run/"
-
-Dir.chdir "Tools/czmq/"
-
-system "git apply -p0 ../../Project/czmq-remove-inline.patch"
-
-Dir.chdir "../.."
 
 if os == :windows
   system %q["C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" Tools\libzmq\builds\msvc\msvc10.sln /upgrade]

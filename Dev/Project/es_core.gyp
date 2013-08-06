@@ -29,7 +29,9 @@
           '<(es_core_dir)/../ogre/OgreMain/include',
           '<(es_core_dir)/../SDL/include',
           '<(es_core_dir)/../tbb/include',
-          '<(es_core_dir)/head_src/',
+          '<(es_core_dir)/head_src',
+          '<(es_core_dir)/../nanomsg/Build/nanomsg/include',
+          '<(es_core_dir)/../cppnanomsg',
       ],
       'link_settings': {
         'libraries': [
@@ -37,6 +39,7 @@
 		  '-lczmq',
 		  '-lOgreMain',
 		  '-lSDL2',
+		  '-lnanomsg',
         ],
       },
         'msvs_settings': {
@@ -47,6 +50,7 @@
           '<(es_core_dir)/../ogre/Build/lib/RelWithDebInfo',
           '<(es_core_dir)/../SDL/VisualC/SDL/Win32/Release',
           '<(es_core_dir)/../tbb/lib/intel64/vc11/',
+          '<(es_core_dir)/../nanomsg/Build/nanomsg/lib',
           'default',
         ],
       },
