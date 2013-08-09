@@ -55,9 +55,9 @@ def wrapped_system(*args)
   if $? != 0 then raise "system command failed" end
 end
 
-# FIXME: wrapped_system will fail if the directory exists
 FileUtils.mkpath "Dev/Tools"
 Dir.chdir "Dev/Tools"
+# TODO/FIXME: only clone if the directory does not exist
 wrapped_system "git clone https://github.com/TTimo/es_core.git"
 wrapped_system "hg clone https://bitbucket.org/sinbad/ogre/ -r v1-8"
 wrapped_system "git clone https://github.com/zeromq/zeromq3-x.git libzmq"
@@ -123,12 +123,16 @@ FileUtils.cp_r "Tools/es_core/binaries/media", "../Run/"
 
 Dir.chdir "Tools/czmq/"
 
-wrapped_system "git apply -p0 ../../Project/czmq-remove-inline.patch"
+# FIXME: does not apply cleanly anymore ?
+#wrapped_system "git apply -p0 ../../Project/czmq-remove-inline.patch"
 
 Dir.chdir "../.."
 
 if os == :windows
-  wrapped_system %q["C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" Tools\libzmq\builds\msvc\msvc10.sln /upgrade]
+# FIXME: I do not have a devenv.exe
+#  wrapped_system %q["C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" Tools\libzmq\builds\msvc\msvc10.sln /upgrade]
+
+# FIXME: This fails because the v100 build tools are not installed
   wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release  Tools\libzmq\builds\msvc\msvc10.sln]
   wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release Tools\czmq\builds\msvc\czmq.vcxproj]
 end
