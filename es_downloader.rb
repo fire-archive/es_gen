@@ -48,20 +48,28 @@ def os
   )
 end
 
+# http://stackoverflow.com/questions/2225305/raise-exception-on-shell-command-failure
+# except the example doesn't work .. old_sys = system is incorrect, alias method doesn't help etc.
+def wrapped_system(*args)
+  system(*args)
+  if $? != 0 then raise "system command failed" end
+end
+
+# FIXME: wrapped_system will fail if the directory exists
 FileUtils.mkpath "Dev/Tools"
 Dir.chdir "Dev/Tools"
-system "git clone https://github.com/TTimo/es_core.git"
-system "hg clone https://bitbucket.org/sinbad/ogre/ -r v1-8"
-system "git clone https://github.com/zeromq/zeromq3-x.git libzmq"
-system "git clone git://github.com/zeromq/czmq.git"
-system "hg clone http://hg.libsdl.org/SDL"
-system "hg clone https://bitbucket.org/cabalistic/ogredeps"
-system "git clone git://github.com/fire/tbb41_20130613oss tbb"
-system "git clone https://chromium.googlesource.com/external/gyp.git"
+wrapped_system "git clone https://github.com/TTimo/es_core.git"
+wrapped_system "hg clone https://bitbucket.org/sinbad/ogre/ -r v1-8"
+wrapped_system "git clone https://github.com/zeromq/zeromq3-x.git libzmq"
+wrapped_system "git clone git://github.com/zeromq/czmq.git"
+wrapped_system "hg clone http://hg.libsdl.org/SDL"
+wrapped_system "hg clone https://bitbucket.org/cabalistic/ogredeps"
+wrapped_system "git clone git://github.com/fire/tbb41_20130613oss tbb"
+wrapped_system "git clone https://chromium.googlesource.com/external/gyp.git"
 
 Dir['./[^.]*'].select { |e| File.directory? e }.each do |e|
-  Dir.chdir(e) { system "git pull" } if File.exist? File.join(e, '.git')
-  Dir.chdir(e) { system "hg pull -u" } if File.exist? File.join(e, '.hg')
+  Dir.chdir(e) { wrapped_system "git pull" } if File.exist? File.join(e, '.git')
+  Dir.chdir(e) { wrapped_system "hg pull -u" } if File.exist? File.join(e, '.hg')
 end
 
 Dir.chdir "ogredeps"
@@ -69,18 +77,17 @@ FileUtils.mkpath "Build"
 Dir.chdir "Build"
 
 if os == :windows
-# $Env:Path = "$Env:Path;C:\Program Files (x86)\CMake 2.8\bin"
-  system %q[cmake -G "Visual Studio 11" ..]
-  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Debug ALL_BUILD.vcxproj]
-  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Debug INSTALL.vcxproj]
-  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release ALL_BUILD.vcxproj]
-  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release INSTALL.vcxproj]
+  wrapped_system %q[cmake -G "Visual Studio 11" ..]
+  wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Debug ALL_BUILD.vcxproj]
+  wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Debug INSTALL.vcxproj]
+  wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release ALL_BUILD.vcxproj]
+  wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release INSTALL.vcxproj]
 end
 
 if os == :macosx
-  system "cmake -G Xcode .."
-  system "xcodebuild -configuration Release"
-  system "xcodebuild -scheme install"
+  wrapped_system "cmake -G Xcode .."
+  wrapped_system "xcodebuild -configuration Release"
+  wrapped_system "xcodebuild -scheme install"
 end
 
 Dir.chdir "../../ogre"
@@ -88,16 +95,13 @@ FileUtils.mkpath "Build"
 Dir.chdir "Build"
 
 if os == :windows
-# the path to ogredeps is wrong?
-# no, I think it's fine .. there's a problem with the ogredeps build though,
-# that folder doesn't get created
-  system "cmake -G \"Visual Studio 11\" -DOGRE_BUILD_RENDERSYSTEM_GL3PLUS=1 -DOGRE_BUILD_SAMPLES=0 -DCMAKE_INSTALL_PREFIX=../../../../Run -DTBB_HOME=\"#{Dir.pwd + "/../../tbb/"}\" -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
-  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=RelWithDebInfo ALL_BUILD.vcxproj]
+  wrapped_system "cmake -G \"Visual Studio 11\" -DOGRE_BUILD_RENDERWRAPPED_SYSTEM_GL3PLUS=1 -DOGRE_BUILD_SAMPLES=0 -DCMAKE_INSTALL_PREFIX=../../../../Run -DTBB_HOME=\"#{Dir.pwd + "/../../tbb/"}\" -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
+  wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=RelWithDebInfo ALL_BUILD.vcxproj]
 end
 
 if os == :macosx
-  system "cmake -G \"Xcode\" -DOGRE_BUILD_RENDERSYSTEM_-DOGRE_BUILD_SAMPLES=0 GL3PLUS=1 -DCMAKE_INSTALL_PREFIX=../../../../Run -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
-  system "xcodebuild -configuration Release"
+  wrapped_system "cmake -G \"Xcode\" -DOGRE_BUILD_RENDERWRAPPED_SYSTEM_-DOGRE_BUILD_SAMPLES=0 GL3PLUS=1 -DCMAKE_INSTALL_PREFIX=../../../../Run -DOGRE_DEPENDENCIES_DIR=../../ogredeps/Build/ogredeps .."
+  wrapped_system "xcodebuild -configuration Release"
 end
 
 # Build libzmq
@@ -119,26 +123,26 @@ FileUtils.cp_r "Tools/es_core/binaries/media", "../Run/"
 
 Dir.chdir "Tools/czmq/"
 
-system "git apply -p0 ../../Project/czmq-remove-inline.patch"
+wrapped_system "git apply -p0 ../../Project/czmq-remove-inline.patch"
 
 Dir.chdir "../.."
 
 if os == :windows
-  system %q["C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" Tools\libzmq\builds\msvc\msvc10.sln /upgrade]
-  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release  Tools\libzmq\builds\msvc\msvc10.sln]
-  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release Tools\czmq\builds\msvc\czmq.vcxproj]
+  wrapped_system %q["C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" Tools\libzmq\builds\msvc\msvc10.sln /upgrade]
+  wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release  Tools\libzmq\builds\msvc\msvc10.sln]
+  wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release Tools\czmq\builds\msvc\czmq.vcxproj]
 end
 
 Dir.chdir "./Project"
 
-system "gyp --depth=." # Build es_core SDL
+wrapped_system "gyp --depth=." # Build es_core SDL
 
 if os == :macosx
-  system "xcodebuild -project es_core"
+  wrapped_system "xcodebuild -project es_core"
 end
 
 if os == :windows
-  system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo es_core.sln]
+  wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo es_core.sln]
 end
 
 Dir.chdir ".."
