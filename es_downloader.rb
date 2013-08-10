@@ -57,15 +57,30 @@ end
 
 FileUtils.mkpath "Dev/Tools"
 Dir.chdir "Dev/Tools"
-# TODO/FIXME: only clone if the directory does not exist
-wrapped_system "git clone https://github.com/TTimo/es_core.git"
-wrapped_system "hg clone https://bitbucket.org/sinbad/ogre/ -r v1-8"
-wrapped_system "git clone https://github.com/zeromq/zeromq3-x.git libzmq"
-wrapped_system "git clone git://github.com/zeromq/czmq.git"
-wrapped_system "hg clone http://hg.libsdl.org/SDL"
-wrapped_system "hg clone https://bitbucket.org/cabalistic/ogredeps"
-wrapped_system "git clone git://github.com/fire/tbb41_20130613oss tbb"
-wrapped_system "git clone https://chromium.googlesource.com/external/gyp.git"
+if ( !File.exist?("es_core") ) then
+  wrapped_system "git clone https://github.com/TTimo/es_core.git"
+end
+if ( !File.exist?("ogre") ) then
+  wrapped_system "hg clone https://bitbucket.org/sinbad/ogre/ -r v1-8"
+end
+if ( !File.exist?("libzmq") ) then
+  wrapped_system "git clone https://github.com/zeromq/zeromq3-x.git libzmq"
+end
+if ( !File.exist?("czmq") ) then
+  wrapped_system "git clone git://github.com/zeromq/czmq.git"
+end
+if ( !File.exist?("SDL") ) then
+  wrapped_system "hg clone http://hg.libsdl.org/SDL"
+end
+if ( !File.exist?("ogredeps") ) then
+  wrapped_system "hg clone https://bitbucket.org/cabalistic/ogredeps"
+end
+if ( !File.exist?("tbb") ) then
+  wrapped_system "git clone git://github.com/fire/tbb41_20130613oss tbb"
+end
+if ( !File.exist?("gyp") ) then
+  wrapped_system "git clone https://chromium.googlesource.com/external/gyp.git"
+end
 
 Dir['./[^.]*'].select { |e| File.directory? e }.each do |e|
   Dir.chdir(e) { wrapped_system "git pull" } if File.exist? File.join(e, '.git')
