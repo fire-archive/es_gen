@@ -20,6 +20,7 @@
 	    '<(es_core_dir)/head_src/render.cpp',
 	    '<(es_core_dir)/head_src/render.h',
 	    '<(es_core_dir)/head_src/shared_render_state.h',
+	    '<(es_core_dir)/nstr.h',
       ],
       'include_dirs': [
           '<(es_core_dir)/',
