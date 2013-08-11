@@ -154,7 +154,8 @@ end
 
 Dir.chdir "./Project"
 
-wrapped_system "gyp --depth=." # Build es_core SDL
+# always returns an error code, even when successful? sad :(
+system "../Tools/gyp/gyp --depth=." # Build es_core SDL
 
 if os == :macosx
   wrapped_system "xcodebuild -project es_core"

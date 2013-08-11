@@ -42,7 +42,6 @@
                 "<(sdl_dir)/src/SDL_assert.c",
                 "<(sdl_dir)/src/SDL.c",
                 "<(sdl_dir)/src/SDL_error.c",
-                "<(sdl_dir)/src/SDL_fatal.c",
                 "<(sdl_dir)/src/SDL_hints.c",
                 "<(sdl_dir)/src/SDL_log.c",
                 "<(sdl_dir)/src/atomic/SDL_atomic.c",
