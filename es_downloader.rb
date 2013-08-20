@@ -101,8 +101,7 @@ end
 
 if os == :macosx
   wrapped_system "cmake -G Xcode .."
-  wrapped_system "xcodebuild -configuration Release"
-  wrapped_system "xcodebuild -scheme install"
+  wrapped_system "xcodebuild -configuration Release -scheme install"
 end
 
 Dir.chdir "../../ogre"
@@ -143,13 +142,23 @@ if os == :windows
   wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release Tools\czmq\builds\msvc\czmq.vcxproj]
 end
 
+if os == :macosx
+  Dir.chdir "Tools/libzmq"
+  FileUtils.mkpath "Build"
+  Dir.chdir "Build"
+  wrapped_system "cmake -G \"Xcode\" .."
+  wrapped_system "xcodebuild -configuration Release"
+  Dir.chdir "../../../"
+end
+
 Dir.chdir "./Project"
 
 # always returns an error code, even when successful? sad :(
 system "../Tools/gyp/gyp --depth=." # Build es_core SDL
 
 if os == :macosx
-  wrapped_system "xcodebuild -project es_core"
+  wrapped_system "xcodebuild -project sdl2.xcodeproj"
+  wrapped_system "xcodebuild -project es_core.xcodeproj"
 end
 
 if os == :windows

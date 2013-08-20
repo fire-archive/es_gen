@@ -213,6 +213,7 @@
                         "/System/Library/Frameworks/ForceFeedback.framework",
                     ],
                     "sources": [                       
+
                         "<(sdl_dir)/src/audio/coreaudio/SDL_coreaudio.c",
                         "<(sdl_dir)/src/audio/coreaudio/SDL_coreaudio.h",
                         "<(sdl_dir)/src/video/cocoa/SDL_cocoaclipboard.m",
@@ -225,6 +226,7 @@
                         "<(sdl_dir)/src/video/cocoa/SDL_cocoashape.m",
                         "<(sdl_dir)/src/video/cocoa/SDL_cocoavideo.m",
                         "<(sdl_dir)/src/video/cocoa/SDL_cocoawindow.m",
+                        "<(sdl_dir)/src/video/cocoa/SDL_cocoamousetap.m",
                         "<(sdl_dir)/src/power/macosx/SDL_syspower.c",
                         "<(sdl_dir)/src/loadso/dlopen/SDL_sysloadso.c",
                         "<(sdl_dir)/src/haptic/darwin/SDL_syshaptic.c",
