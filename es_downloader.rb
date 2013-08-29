@@ -118,10 +118,6 @@ if os == :macosx
   wrapped_system "xcodebuild -configuration Release"
 end
 
-# Build libzmq
-# Build czmq
-# Build es_core
-
 Dir.chdir "../../.."
 Dir.pwd
 
@@ -134,11 +130,8 @@ Dir.glob("Tools/libzmq/bin/Win32/libzmq*") {|f| FileUtils.cp File.expand_path(f)
 FileUtils.cp_r "Tools/es_core/binaries/media", "../Run/"
 
 if os == :windows
-# FIXME: I do not have a devenv.exe
-#  wrapped_system %q["C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe" Tools\libzmq\builds\msvc\msvc10.sln /upgrade]
-
 # FIXME: This fails because the v100 build tools are not installed
-  wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release  Tools\libzmq\builds\msvc\msvc10.sln]
+  wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release  Tools\libzmq\builds\msvc\msvc11.sln]
   wrapped_system %q["%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe" /nologo /property:Configuration=Release Tools\czmq\builds\msvc\czmq.vcxproj]
 end
 
