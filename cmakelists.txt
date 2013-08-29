@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 2.8)
+
+project(es_core)
+
+find_package(Git)
+if(NOT GIT_FOUND)
+  message(ERROR "Cannot find git. Git is required for building")
+endif()
+
+find_package(Hg)
+if(NOT HG_FOUND)
+  message(ERROR "Cannot find Mercurial. Mercurial is required for building")
+endif()
+
+include( ExternalProject )
+
+if( NOT OGREDEPS_LIBRARY )
+  include( ${CMAKE_SOURCE_DIR}/CMake/External-Ogredeps.cmake )
+  list( APPEND ES_CORE_DEPENDENCIES Ogredeps )
+endif()

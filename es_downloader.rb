@@ -83,8 +83,8 @@ if ( !File.exist?("gyp") ) then
 end
 
 Dir['./[^.]*'].select { |e| File.directory? e }.each do |e|
-  Dir.chdir(e) { wrapped_system "git pull" } if File.exist? File.join(e, '.git')
-  Dir.chdir(e) { wrapped_system "hg pull -u" } if File.exist? File.join(e, '.hg')
+  Dir.chdir(e) { print "Pulling Git directory: " + e +"\n"; wrapped_system "git pull" } if File.exist? File.join(e, '.git')
+  Dir.chdir(e) { print "Pulling Mercurial directory: "+ e +"\n"; wrapped_system "hg pull -u" } if File.exist? File.join(e, '.hg')
 end
 
 Dir.chdir "ogredeps"
