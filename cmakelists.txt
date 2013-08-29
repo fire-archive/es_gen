@@ -18,3 +18,13 @@ if( NOT OGREDEPS_LIBRARY )
   include( ${CMAKE_SOURCE_DIR}/CMake/External-Ogredeps.cmake )
   list( APPEND ES_CORE_DEPENDENCIES Ogredeps )
 endif()
+
+if( NOT TBB_LIBRARY )
+  include( ${CMAKE_SOURCE_DIR}/CMake/External-TBB.cmake )
+  list( APPEND ES_CORE_DEPENDENCIES TBB )
+endif()
+
+if( NOT OGRE_LIBRARY )
+  include( ${CMAKE_SOURCE_DIR}/CMake/External-Ogre.cmake )
+  list( APPEND ES_CORE_DEPENDENCIES Ogre )
+endif()
