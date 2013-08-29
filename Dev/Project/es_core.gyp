@@ -16,11 +16,11 @@
         '<(es_core_dir)/render_main.cpp',
         '<(es_core_dir)/render_main.h',
         '<(es_core_dir)/head_src/game.cpp',
-	    '<(es_core_dir)/head_src/game.h',
-	    '<(es_core_dir)/head_src/render.cpp',
-	    '<(es_core_dir)/head_src/render.h',
-	    '<(es_core_dir)/head_src/shared_render_state.h',
-	    '<(es_core_dir)/nstr.h',
+        '<(es_core_dir)/head_src/game.h',
+	'<(es_core_dir)/head_src/render.cpp',
+        '<(es_core_dir)/head_src/render.h',
+        '<(es_core_dir)/head_src/shared_render_state.h',                       
+        '<(es_core_dir)/nstr.h',
       ],
       'include_dirs': [
           '<(es_core_dir)/',
@@ -62,11 +62,19 @@
         ],
       },
       'conditions': [
-        ['OS=="win"', {
+        ['OS=="mac"', {
           'targets': [
             {
-			  'defines': [
-			  ],
+              'defines': [
+                
+              ],
+              'link_settings': {
+                'libraries': [
+                '<(es_core_dir)/../czmq ogreman zeromq sdl2
+                ]
+              },
+              
+              
             },
           ],
         }],
