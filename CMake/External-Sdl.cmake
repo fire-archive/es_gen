@@ -1,7 +1,5 @@
-IF(UNIX)
 ExternalProject_Add(Sdl
   HG_REPOSITORY "https://hg.libsdl.org/SDL"
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/Tools/Sdl"
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/Run/
 )
-ENDIF(UNIX)
