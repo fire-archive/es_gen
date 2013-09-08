@@ -8,3 +8,12 @@ ExternalProject_Add(Czmq
   BUILD_IN_SOURCE 1
 )
 ENDIF(UNIX)
+
+IF(WIN32)
+ExternalProject_Add(Czmq
+  DEPENDS Ogredeps
+  HG_REPOSITORY "https://github.com/fire/czmq.git"
+  PREFIX "${CMAKE_CURRENT_BINARY_DIR}/Tools/Czmq"
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/Run/
+)
+ENDIF(WIN32)
