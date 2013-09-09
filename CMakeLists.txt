@@ -49,3 +49,5 @@ endif()
 
 include( ${CMAKE_SOURCE_DIR}/CMake/External-es_core.cmake )
 add_dependencies( es_core ES_CORE_DEPENDENCIES) 
+
+set( CMAKE_BUILD_TYPE Release CACHE STRING "Default cmake build type" )
