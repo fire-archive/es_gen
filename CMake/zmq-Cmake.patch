@@ -1,0 +1,21 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a258c08..909257d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -617,6 +617,8 @@ list(APPEND tests
+         test_stream)
+ endif()		
+ 
++option(BUILD_TESTING "Test zmq library." 1)
++if (BUILD_TESTING)
+ foreach(test ${tests})
+   add_executable(${test} tests/${test}.cpp)
+   target_link_libraries(${test} libzmq)
+@@ -630,6 +632,7 @@ foreach(test ${tests})
+     add_test(NAME ${test} COMMAND ${test})
+   endif() 
+ endforeach()
++endif(BUILD_TESTING )
+ 
+ #-----------------------------------------------------------------------------
+ # installer
