@@ -1,0 +1,21 @@
+diff -r 84d89d60908f CMakeLists.txt
+--- a/CMakeLists.txt	Sat Sep 07 13:57:20 2013 -0400
++++ b/CMakeLists.txt	Sun Sep 08 22:58:49 2013 -0700
+@@ -1215,13 +1215,16 @@
+ list(APPEND INCLUDE_FILES ${BIN_INCLUDE_FILES})
+ install(FILES ${INCLUDE_FILES} DESTINATION include/SDL2)
+ 
+-if(SDL_SHARED)
++if(SDL_SHARED AND NOT WINDOWS)
+   install(CODE "
+     execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink
+     \"libSDL2-2.0.so\" \"libSDL2.so\")")
+   install(FILES ${SDL2_BINARY_DIR}/libSDL2.so DESTINATION "lib${LIB_SUFFIX}")
++elseif(WINDOWS)
++  install(TARGETS SDL2 RUNTIME DESTINATION bin)
+ endif(SDL_SHARED)
+ 
++
+ if(NOT WINDOWS OR CYGWIN)
+   if(FREEBSD)
+     # FreeBSD uses ${PREFIX}/libdata/pkgconfig
