@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-project(es_builder)
+project(es_build)
 
 find_package(Git)
 if(NOT GIT_FOUND)
