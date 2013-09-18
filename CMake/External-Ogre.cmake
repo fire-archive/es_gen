@@ -1,5 +1,5 @@
 ExternalProject_Add(Ogre
-  DEPENDS Ogre Ogredeps
+  DEPENDS Ogredeps
   HG_REPOSITORY "https://bitbucket.org/sinbad/ogre"
   HG_TAG "v1-8"
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/Tools/Ogre"
