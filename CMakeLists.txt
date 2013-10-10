@@ -17,7 +17,6 @@ endif()
 include( ExternalProject )
 
 include( ${CMAKE_SOURCE_DIR}/CMake/External-Ogredeps.cmake )
-include( ${CMAKE_SOURCE_DIR}/CMake/External-TBB.cmake )
 include( ${CMAKE_SOURCE_DIR}/CMake/External-Ogre.cmake )
 include( ${CMAKE_SOURCE_DIR}/CMake/External-Zmq.cmake )
 include( ${CMAKE_SOURCE_DIR}/CMake/External-Czmq.cmake )
