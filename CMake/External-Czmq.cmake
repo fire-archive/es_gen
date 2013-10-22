@@ -1,7 +1,7 @@
 IF(UNIX)
 ExternalProject_Add(Czmq
   DEPENDS Zmq
-  GIT_REPOSITORY "https://github.com/zeromq/czmq.git"
+  GIT_REPOSITORY "https://github.com/fire/czmq.git"
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/Tools/Czmq"
   CONFIGURE_COMMAND ./autogen.sh && ./configure --with-libzmq=${CMAKE_CURRENT_BINARY_DIR}/Run --prefix=${CMAKE_CURRENT_BINARY_DIR}/Run
   BUILD_COMMAND make all
@@ -13,7 +13,7 @@ ENDIF(UNIX)
 IF(WIN32)
 ExternalProject_Add(Czmq
   DEPENDS Zmq
-  GIT_REPOSITORY "https://github.com/zeromq/czmq.git"
+  GIT_REPOSITORY "https://github.com/fire/czmq.git"
   PREFIX "${CMAKE_CURRENT_BINARY_DIR}/Tools/Czmq"
   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/Run/ -DWITH_LIBZMQ=${CMAKE_CURRENT_BINARY_DIR}/Run/include
 )
